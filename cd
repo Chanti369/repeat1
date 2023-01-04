@@ -21,6 +21,7 @@ pipeline{
             steps{
                 script{
                     sshagent(['awskeypair']) {
+                        sh 'scp -r /var/lib/jenkins/workspace/p1/* ec2-user@172.31.14.15:/home/ec2-user'
                         sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.14.15 sudo amazon-linux-extras install -y ansible2'
                     }
                 }
