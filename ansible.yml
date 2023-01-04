@@ -12,7 +12,7 @@
       command: wget https://get.helm.sh/helm-v3.10.3-linux-amd64.tar.gz
       when: not result.stat.exists
     - name: untar helm
-      command: tar -zxvf helm-v3.0.0-linux-amd64.tar.gz
+      command: tar -zxvf helm-v3.10.3-linux-amd64.tar.gz
       when: not result.stat.exists
     - name: move helm
       command: mv linux-amd64/helm /usr/local/bin/helm
