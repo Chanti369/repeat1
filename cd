@@ -30,7 +30,7 @@ pipeline{
         stage('ansible-playbook'){
             steps{
                 script{
-                    sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.14.15 sudo ansible-playbook /home/ec2-user/ansible.yml'
+                    sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.14.15 ansible-playbook /home/ec2-user/ansible.yml'
                 }
             }
         }        
