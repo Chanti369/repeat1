@@ -1,0 +1,20 @@
+pipeline{
+    parameters{
+        choice(name: 'action', choices: 'create\ndestroy', description: 'this is used to create or detroy the helm chart')
+        string(name: 'clustername', defaultValue: 'devcluster', description: 'here you can define the cluster name')
+        string(name: 'reponame', defaultValue: 'bitnami', description: 'here you can define the repo name')
+        string(name: 'chartname', defaultValue: 'jenkins', description: 'here you can define the chart name')
+    }
+    agent any
+    stages{
+        Stage('establish ssh connection'){
+            steps{
+                script{
+                    sshagent(['awskeypair']) {
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.14.15'
+                    }
+                }
+            }
+        }
+    }
+}
