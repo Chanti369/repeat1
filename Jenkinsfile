@@ -75,5 +75,12 @@ pipeline{
                 }
             }
         }
+        stage('ansible-playbook'){
+            steps{
+                script{
+                   sh 'ansible-playbook ansible.yml' 
+                }
+            }
+        }
     }
 }
