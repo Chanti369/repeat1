@@ -43,7 +43,7 @@ pipeline{
                     sshagent(['awskeypair']) {
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.14.15 helm repo add ${params.reponame} ${params.repourl}"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.14.15 helm repo update ${reponame}"
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.14.15 helm install ${params.releasename} ${params.reponame}/${params.chartname}" 
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.14.15 helm uninstall ${params.releasename}" 
                     }
                 }
             }
