@@ -19,7 +19,7 @@
       when: not result.stat.exists  
     - name: check datree exists or not
       stat:
-         path: "/root/.local/share/helm/plugins/helm-datree"
+         path: "/home/ec2-user/.local/share/helm/plugins/helm-datree"
       register: result1
     - name: install helm datree
       command: helm plugin install https://github.com/datreeio/helm-datree
