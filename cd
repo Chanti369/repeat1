@@ -31,7 +31,7 @@ pipeline{
             steps{
                 script{
                     sshagent(['awskeypair']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.14.15 ansible-playbook /home/ec2-user/ansible.yml'
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.14.15 ansible-playbook /home/ec2-user/ansible1.yml'
                     }    
                 }
             }
