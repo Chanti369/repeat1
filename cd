@@ -8,11 +8,20 @@ pipeline{
     }
     agent any
     stages{
-        stage('git checkout'){
+        stage('ssh'){
             steps{
                 script{
                     sshagent(['awskeypair']) {
                         sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.14.15'
+                    }
+                }
+            }
+        }
+        stage('install ansible'){
+            steps{
+                script{
+                    sshagent(['awskeypair']) {
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.14.15 sudo amazon-linux-extras install -y ansible2'
                     }
                 }
             }
