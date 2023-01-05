@@ -76,21 +76,23 @@ pipeline{
             when { expression { params.action == 'destroy'}}
             steps{
                 script{
-                    def apply = false
-                    try{
+                    sshagent(['awskeypair']) {
+                      def apply = false
+                      try{
                         input message: "do you want to delete this ${chartname} chart from the cluster", ok: 'yes, delete'
                         apply = true
-                    }
-                    catch(err){
+                      }
+                      catch(err){
                         apply = false
                         currentBuild.result = 'ABORTED'
-                    }
-                    if(apply){
+                      }
+                      if(apply){
                         sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94'
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 helm uninstall ${releasename}"
+                      }
                     }
                 }
             }
         }
     }
-}
+}    
