@@ -17,5 +17,15 @@ pipeline{
                 }
             }
         }
+        stage('copy files'){
+            steps{
+                script{
+                    sshagent(['awskeypair']) {
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94'
+                        sh 'scp -r /var/lib/jenkins/workspace/p3/* ec2-user@172.31.42.94:/home/ec2-user'
+                    }
+                }
+            }
+        }
     }
 }
