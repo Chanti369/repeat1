@@ -5,5 +5,10 @@
   become_user: ec2-user
   become_method: sudo 
   tasks:
+    - name: check if git exists
+      stat:
+        path: "/usr/bin/git"
+      register: result1  
     - name: install git
       command: sudo yum install -y git
+      when: not result1.stat.exists

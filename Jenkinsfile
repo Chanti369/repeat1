@@ -48,5 +48,29 @@ pipeline{
                 }
             }
         }
+        stage('apply helm chart'){
+            when { expression { params.action == 'create'}}
+            steps{
+                script{
+                    sshagent(['awskeypair']) {
+                        def apply = false
+                        try{
+                            input message: 'do you want to apply this chart to the cluster', ok: 'yes, apply'
+                            apply = true
+                        }
+                        catch(err){
+                            apply = false
+                            currentBuild.result = 'ABORTED'
+                        }
+                        if(apply){
+                            sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94'
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 helm repo add ${reponame} ${repourl}"
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 helm repo update ${reponame}"
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 helm install ${releasename} ${reponame}/${chartname}"
+                        }
+                    }
+                }
+            }
+        }
     }
 }
