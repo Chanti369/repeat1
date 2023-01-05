@@ -55,7 +55,7 @@ pipeline{
                     sshagent(['awskeypair']) {
                         def apply = false
                         try{
-                            input message: "do you want to apply this ${chartname}" chart to the cluster, ok: "yes, apply"
+                            input message: "do you want to apply this ${chartname} chart to the cluster", ok: 'yes, apply'
                             apply = true
                         }
                         catch(err){
