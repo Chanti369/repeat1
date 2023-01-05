@@ -55,7 +55,7 @@ pipeline{
                     sshagent(['awskeypair']) {
                         def apply = false
                         try{
-                            input message: 'do you want to apply this chart to the cluster', ok: 'yes, apply'
+                            input message: "do you want to apply this ${chartname}" chart to the cluster, ok: 'yes, apply'
                             apply = true
                         }
                         catch(err){
@@ -68,6 +68,26 @@ pipeline{
                             sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 helm repo update ${reponame}"
                             sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 helm install ${releasename} ${reponame}/${chartname}"
                         }
+                    }
+                }
+            }
+        }
+        stage('delete helm chart'){
+            when { expression { params.action == 'destroy'}}
+            steps{
+                script{
+                    def apply = false
+                    try{
+                        input message: "do you want to delete this ${chartname} chart from the cluster", ok: 'yes, delete'
+                        apply = true
+                    }
+                    catch(err){
+                        apply = false
+                        currentBuild.result = 'ABORTED'
+                    }
+                    if(apply){
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94'
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 helm uninstall ${releasename}"
                     }
                 }
             }
