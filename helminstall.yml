@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  become: yes
+  become_user: ec2-user
+  connection: ssh
+  tasks: 
+    - name: check if helm path exists or not
+      stat:
+         path: "/usr/local/bin/helm"
+      register: result
+    - name: install helm
+      command: wget https://get.helm.sh/helm-v3.10.3-linux-amd64.tar.gz
+      when: not result.stat.exists
+    - name: untar helm
+      command: tar -zxvf helm-v3.10.3-linux-amd64.tar.gz
+      when: not result.stat.exists
+    - name: move helm
+      command: sudo mv linux-amd64/helm /usr/local/bin/helm
+      when: not result.stat.exists    
