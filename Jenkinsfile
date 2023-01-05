@@ -38,5 +38,15 @@ pipeline{
                 }
             }
         }
+        stage('helm install'){
+            steps{
+                script{
+                    sshagent(['awskeypair']) {
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94'
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 ansible-playbook /home/ec2-user/helminstall.yml'
+                    }
+                }
+            }
+        }
     }
 }
