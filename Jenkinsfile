@@ -12,7 +12,7 @@ pipeline{
             steps{
                 script{
                    sshagent(['awskeypair']) {
-                     sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94'
+                     sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96'
                    }
                 }
             }
@@ -21,8 +21,8 @@ pipeline{
             steps{
                 script{
                     sshagent(['awskeypair']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94'
-                        sh 'scp -r /var/lib/jenkins/workspace/p3/* ec2-user@172.31.42.94:/home/ec2-user'
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96'
+                        sh 'scp -r /var/lib/jenkins/workspace/p3/* ec2-user@172.31.36.96:/home/ec2-user'
                     }
                 }
             }
@@ -31,9 +31,9 @@ pipeline{
             steps{
                 script{
                     sshagent(['awskeypair']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94'
-                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 sudo amazon-linux-extras install -y ansible2'
-                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 ansible-playbook /home/ec2-user/gitansible.yml'
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96'
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96 sudo amazon-linux-extras install -y ansible2'
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96 ansible-playbook /home/ec2-user/gitansible.yml'
                     }
                 }
             }
@@ -42,8 +42,8 @@ pipeline{
             steps{
                 script{
                     sshagent(['awskeypair']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94'
-                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 ansible-playbook /home/ec2-user/helminstall.yml'
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96'
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96 ansible-playbook /home/ec2-user/helminstall.yml'
                     }
                 }
             }
@@ -63,10 +63,10 @@ pipeline{
                             currentBuild.result = 'ABORTED'
                         }
                         if(apply){
-                            sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94'
-                            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 helm repo add ${reponame} ${repourl}"
-                            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 helm repo update ${reponame}"
-                            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 helm install ${releasename} ${reponame}/${chartname}"
+                            sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96'
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96 helm repo add ${reponame} ${repourl}"
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96 helm repo update ${reponame}"
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96 helm install ${releasename} ${reponame}/${chartname}"
                         }
                     }
                 }
@@ -87,8 +87,8 @@ pipeline{
                         currentBuild.result = 'ABORTED'
                       }
                       if(apply){
-                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94'
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.42.94 helm uninstall ${releasename}"
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96'
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.36.96 helm uninstall ${releasename}"
                       }
                     }
                 }

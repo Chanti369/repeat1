@@ -1,13 +1,14 @@
 pipeline{
     parameters{
-        choice(name: 'action', choices: 'create\ndestroy', description: 'this is used to create or detroy the helm chart')
-        string(name: 'clustername', defaultValue: 'devcluster', description: 'here you can define the cluster name')
-        string(name: 'reponame', defaultValue: 'bitnami', description: 'here you can define the repo name')
-        string(name: 'chartname', defaultValue: 'jenkins', description: 'here you can define the chart name')
+        choice(name: 'action', choices: 'create\ndestroy\ndestroycluster', description: 'create,destroy the cluster')
+        string(name: 'kopscluster', defaultValue: 'devcluster', description: 'which environment')
+        string(name: 'updaterepo', defaultValue: 'bitnami', description: 'name the repo you want to update')
+        string(name: 'releasename', defaultValue: 'my-release', description: 'name your release')
+        string(name: 'chartname', defaultValue: 'jenkins', description: 'name of the chart that you want install')
     }
     agent any
     stages{
-        Stage('establish ssh connection'){
+        stage('git checkout'){
             steps{
                 script{
                     sshagent(['awskeypair']) {
@@ -15,6 +16,5 @@ pipeline{
                     }
                 }
             }
-        }
+        }        
     }
-}
